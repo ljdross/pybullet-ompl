@@ -192,17 +192,6 @@ class ManipulationFlow:
         return tuple(map(lambda x, y: x + y, tuple_a, tuple_b))
         # Source: https://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
 
-    def load_puzzle(self):
-        puzzle = p.loadURDF("/home/le/ba/puzzle-generator/puzzles/simple_sliders/urdf/simple_sliders.urdf",
-                            [0.5, 0.5, 0],
-                            useFixedBase=1,
-                            flags=p.URDF_MAINTAIN_LINK_ORDER | p.URDF_USE_SELF_COLLISION_INCLUDE_PARENT)
-        p.resetJointState(puzzle, 1, 0)
-        p.resetJointState(puzzle, 2, 0)
-        p.resetJointState(puzzle, 3, 0)
-        p.resetJointState(puzzle, 4, 0)
-        return puzzle
-
     def execute(self, path, fps):
         for state in path:
             self.robot.set_state(state)
