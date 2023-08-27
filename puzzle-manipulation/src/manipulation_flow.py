@@ -14,12 +14,7 @@ from puzzle_state import *
 
 class ManipulationFlow:
     def __init__(self):
-        p.connect(p.GUI)
-        p.setGravity(0, 0, -9.8)
-        p.setTimeStep(1./240.)
-
-        p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        p.loadURDF("plane.urdf")
+        self.set_up_pybullet()
 
         merge_urdf_files("/home/le/ba/pybullet-ompl/models/kuka_iiwa/model_in_2d_plane.urdf",
                                 "/home/le/ba/puzzle-generator/puzzles/simple_sliders/urdf/simple_sliders.urdf",
@@ -45,6 +40,13 @@ class ManipulationFlow:
 
         start = [-1, -1, 0, 0, 0, -1, 0, 1.5, 0, 0, 0, 0, 0]
         self.robot.set_state(start)
+
+    def set_up_pybullet(self):
+        p.connect(p.GUI)
+        p.setGravity(0, 0, -9.8)
+        p.setTimeStep(1. / 240.)
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())
+        p.loadURDF("plane.urdf")
 
     def run(self):
 
