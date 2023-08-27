@@ -14,7 +14,6 @@ class PuzzleState:
 
         print(self.puzzle_indices)
 
-        self.state = initial_state
         for i, joint_pos in enumerate(initial_state):
             self.change_joint_pos(i, joint_pos)
 
