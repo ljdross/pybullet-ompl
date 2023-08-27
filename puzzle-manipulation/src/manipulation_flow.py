@@ -14,8 +14,6 @@ from puzzle_state import *
 
 class ManipulationFlow:
     def __init__(self):
-        self.obstacles = []
-
         p.connect(p.GUI)
         p.setGravity(0, 0, -9.8)
         p.setTimeStep(1./240.)
@@ -42,7 +40,7 @@ class ManipulationFlow:
         self.puzzle_state = PuzzleState(robot_id, self.puzzle_base_index, (0, 0, 0, 0))
 
         # setup pb_ompl
-        self.pb_ompl_interface = pb_ompl.PbOMPL(self.robot, self.obstacles)
+        self.pb_ompl_interface = pb_ompl.PbOMPL(self.robot)
         self.pb_ompl_interface.set_planner("BITstar")
 
         start = [-1, -1, 0, 0, 0, -1, 0, 1.5, 0, 0, 0, 0, 0]
