@@ -270,7 +270,6 @@ class PbOMPL():
                     p.setJointMotorControl2(self.robot.id, i, p.POSITION_CONTROL, q[i],force=5 * 240.)
             else:
                 self.robot.set_state(q)
-            p.stepSimulation()
             time.sleep(0.01)
 
 
