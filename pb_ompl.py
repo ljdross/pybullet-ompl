@@ -222,6 +222,7 @@ class PbOMPL():
             s[i] = start[i]
             g[i] = goal[i]
 
+        self.ss.clear()
         self.ss.setStartAndGoalStates(s, g)
 
         # attempt to solve the problem within allowed planning time
