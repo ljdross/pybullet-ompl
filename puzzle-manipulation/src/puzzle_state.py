@@ -2,7 +2,7 @@ import pybullet as p
 
 
 class PuzzleState:
-    def __init__(self, body_id: int, puzzle_base_index: int, initial_state: tuple):
+    def __init__(self, body_id: int, puzzle_base_index: int, initial_state: tuple[float, ...]):
         self.puzzle_id = body_id
         self.puzzle_indices = []
 
