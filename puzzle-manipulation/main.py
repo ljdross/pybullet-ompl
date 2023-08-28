@@ -1,4 +1,4 @@
-from src.manipulation_flow import *
+from src.manipulation import *
 from src.configuration import *
 
 
@@ -13,8 +13,9 @@ def main():
         ompl_planner="BITstar",
         step_size=0.002
     )
-    flow = ManipulationFlow(config)
-    flow.run()
+    manipulation = Manipulation(config)
+    manipulation.plan()
+    manipulation.execute()
 
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ from puzzle_state import *
 from configuration import *
 
 
-class ManipulationFlow:
+class Manipulation:
     def __init__(self, config: Configuration):
         self.config = config
         self.solution = []
@@ -62,7 +62,7 @@ class ManipulationFlow:
         print("number of dimensions = " + str(self.pb_ompl_world.num_dim))
         print("=" * 100)
 
-    def run(self):
+    def plan(self):
         z_low = 0.47
         z_high = 0.8
         pos1 = (1, -1, z_low)
@@ -102,10 +102,6 @@ class ManipulationFlow:
 
         trajectory = self.calculate_trajectory(pos5, pos4, self.config.step_size)
         self.get_states(trajectory, 0)
-
-        self.execute(self.solution, 200)
-
-        time.sleep(4.)
 
     def plan_and_move_to(self, pos, double_speed=False):
         pos_state, is_valid = self.get_valid_state(pos)
@@ -197,7 +193,9 @@ class ManipulationFlow:
         return tuple(map(lambda x, y: x + y, tuple_a, tuple_b))
         # Source: https://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
 
-    def execute(self, path, fps):
-        for state in path:
+    def execute(self, fps=200):
+        for state in self.solution:
             self.pb_ompl_world.set_state(state)
             time.sleep(1. / fps)
+
+        time.sleep(4.)
