@@ -9,10 +9,10 @@ import pybullet_data
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dirname)
 
-from file_utils.urdf_merger import *
 import pb_ompl
-from puzzle_state import *
-from configuration import *
+from file_utils.urdf_merger import merge_urdf_files
+from puzzle_state import PuzzleState
+from configuration import Configuration
 
 
 class Manipulation:

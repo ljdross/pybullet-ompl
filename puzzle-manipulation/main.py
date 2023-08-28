@@ -1,5 +1,5 @@
-from src.manipulation import *
-from src.configuration import *
+from src.manipulation import Manipulation
+from src.configuration import Configuration
 
 
 def main():

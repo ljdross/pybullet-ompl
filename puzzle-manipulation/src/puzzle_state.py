@@ -1,5 +1,6 @@
 import pybullet as p
-from configuration import *
+from configuration import Configuration
+
 
 class PuzzleState:
     def __init__(self, world_id: int, config: Configuration):
