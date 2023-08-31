@@ -17,7 +17,7 @@ def main():
             Action(0, 0.5, "link_fixed_2_handle_knob")
         ),
         ompl_planner="BITstar",
-        step_size=0.002
+        step_size=0.04
     )
 
     manipulation = Manipulation(config)

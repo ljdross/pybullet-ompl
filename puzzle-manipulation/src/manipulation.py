@@ -63,6 +63,10 @@ class Manipulation:
         print("number of dimensions = " + str(self.pb_ompl_world.num_dim))
         print("=" * 100)
 
+    def plan(self):
+        for action in self.config.action_sequence:
+            self.plan_action(action)
+
     def plan_action(self, action: Action):
         joint_index = self.puzzle_state.joint_index_map[action.grip_point]
         target_pos = self.get_target_pos(joint_index)
@@ -83,11 +87,15 @@ class Manipulation:
         return pos
 
     def actuate(self, action: Action):
+        joint_index = self.puzzle_state.joint_index_map[action.grip_point]
         diff = self.calculate_diff(action)
         while abs(diff) > self.config.step_size:
-            self.puzzle_state.change_joint_pos(action.joint_index, diff)
-            target_pos = self.get_target_pos(action.joint_index)
-            self.plan_and_move_to(target_pos)
+            if diff < 0:
+                self.puzzle_state.move_joint(action.joint_index, -self.config.step_size)
+            else:
+                self.puzzle_state.move_joint(action.joint_index, self.config.step_size)
+            target_pos = self.get_target_pos(joint_index)
+            self.plan_and_move_to(target_pos, True)
             diff = self.calculate_diff(action)
 
 
@@ -95,10 +103,6 @@ class Manipulation:
         target = action.joint_pos
         actual = self.puzzle_state.get_joint_pos(action.joint_index)
         return target - actual
-
-    def plan(self):
-        for action in self.config.action_sequence:
-            self.plan_action(action)
 
     def plan_and_move_to(self, pos, double_speed=False):
         pos_state, is_valid = self.get_valid_state(pos)
