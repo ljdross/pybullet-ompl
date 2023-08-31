@@ -13,6 +13,7 @@ import pb_ompl
 from file_utils.urdf_merger import merge_urdf_files
 from puzzle_state import PuzzleState
 from configuration import Configuration
+from action import Action
 
 
 class Manipulation:
@@ -62,46 +63,42 @@ class Manipulation:
         print("number of dimensions = " + str(self.pb_ompl_world.num_dim))
         print("=" * 100)
 
+    def plan_action(self, action: Action):
+        joint_index = self.puzzle_state.joint_index_map[action.grip_point]
+        target_pos = self.get_target_pos(joint_index)
+        target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
+
+        self.plan_and_move_to(target_pos_high)
+        self.plan_and_move_to(target_pos, True)
+
+        self.actuate(action)
+
+        target_pos = self.get_target_pos(joint_index)
+        target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
+        self.plan_and_move_to(target_pos_high, True)
+
+    def get_target_pos(self, joint_index):
+        link_state = p.getLinkState(self.pb_ompl_world.id, joint_index)
+        pos = self.add_tuples(link_state[0], (0, 0, 0.15))
+        return pos
+
+    def actuate(self, action: Action):
+        diff = self.calculate_diff(action)
+        while abs(diff) > self.config.step_size:
+            self.puzzle_state.change_joint_pos(action.joint_index, diff)
+            target_pos = self.get_target_pos(action.joint_index)
+            self.plan_and_move_to(target_pos)
+            diff = self.calculate_diff(action)
+
+
+    def calculate_diff(self, action):
+        target = action.joint_pos
+        actual = self.puzzle_state.get_joint_pos(action.joint_index)
+        return target - actual
+
     def plan(self):
-        z_low = 0.47
-        z_high = 0.8
-        pos1 = (1, -1, z_low)
-        pos1up = (1, -1, z_high)
-        pos2 = (0.5, -1, z_low)
-        pos2up = (0.5, -1, z_high)
-        pos3 = (0.5, -0.5, z_low)
-        pos3up = (0.5, -0.5, z_high)
-        pos4 = (0, -0.5, z_low)
-        pos4up = (0, -0.5, z_high)
-        pos5 = (0, 0, z_low)
-        pos5up = (0, 0, z_high)
-
-        self.plan_and_move_to(pos2up)
-        self.plan_and_move_to(pos2, True)
-
-        trajectory = self.calculate_trajectory(pos2, pos1, self.config.step_size)
-        self.get_states(trajectory, 3)
-
-        self.plan_and_move_to(pos1up, True)
-        self.plan_and_move_to(pos3up)
-        self.plan_and_move_to(pos3, True)
-
-        trajectory = self.calculate_trajectory(pos3, pos2, self.config.step_size)
-        self.get_states(trajectory, 2)
-
-        self.plan_and_move_to(pos2up, True)
-        self.plan_and_move_to(pos4up)
-        self.plan_and_move_to(pos4, True)
-
-        trajectory = self.calculate_trajectory(pos4, pos3, self.config.step_size)
-        self.get_states(trajectory, 1)
-
-        self.plan_and_move_to(pos3up, True)
-        self.plan_and_move_to(pos5up)
-        self.plan_and_move_to(pos5, True)
-
-        trajectory = self.calculate_trajectory(pos5, pos4, self.config.step_size)
-        self.get_states(trajectory, 0)
+        for action in self.config.action_sequence:
+            self.plan_action(action)
 
     def plan_and_move_to(self, pos, double_speed=False):
         pos_state, is_valid = self.get_valid_state(pos)

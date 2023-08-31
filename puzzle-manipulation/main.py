@@ -10,10 +10,16 @@ def main():
         merged_world_output_path="/home/le/ba/pybullet-ompl/models/kuka_iiwa/merged_world.urdf",
         robot_start_state=(-1, -1, 0, 0, 0, -1, 0, 1.5, 0),
         puzzle_start_state=(0, 0, 0, 0),
-        action_sequence=(Action(3, 0.5), Action(2, 0.5), Action(1, 0.5), Action(0, 0.5)),
+        action_sequence=(
+            Action(3, 0.5, "link_fixed_11_handle_knob"),
+            Action(2, 0.5, "link_fixed_8_handle_knob"),
+            Action(1, 0.5, "link_fixed_5_handle_knob"),
+            Action(0, 0.5, "link_fixed_2_handle_knob")
+        ),
         ompl_planner="BITstar",
         step_size=0.002
     )
+
     manipulation = Manipulation(config)
     manipulation.plan()
     manipulation.execute()

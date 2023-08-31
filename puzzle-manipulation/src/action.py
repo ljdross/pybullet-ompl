@@ -5,3 +5,4 @@ from dataclasses import dataclass
 class Action:
     joint_index: int
     joint_pos: float
+    grip_point: str
