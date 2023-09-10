@@ -14,6 +14,7 @@ from file_utils.urdf_merger import merge_urdf_files
 from puzzle_state import PuzzleState
 from configuration import Configuration
 from action import Action
+from solution_trimmer import trim
 
 
 class Manipulation:
@@ -66,6 +67,8 @@ class Manipulation:
     def plan(self):
         for action in self.config.action_sequence:
             self.plan_action(action)
+
+        trim(self.solution)
 
     def plan_action(self, action: Action):
         joint_index = self.puzzle_state.joint_index_map[action.grip_point]
