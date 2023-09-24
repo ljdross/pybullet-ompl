@@ -9,8 +9,6 @@ class PuzzleState:
 
         puzzle_base_index = len(config.robot_start_state)
         puzzle_joints = self.get_all_puzzle_joints(puzzle_base_index, p.getNumJoints(self.world_id))
-        for joint in puzzle_joints:
-            print(joint)
 
         self.puzzle_indices = self.get_puzzle_indices(puzzle_joints)
         print("puzzle_indices = " + str(self.puzzle_indices))
@@ -44,8 +42,11 @@ class PuzzleState:
 
     def get_all_puzzle_joints(self, min_index, max_index):
         joints = []
+        print("puzzle joints:")
         for i in range(min_index, max_index):
-            joints.append(p.getJointInfo(self.world_id, i))
+            joint_info = p.getJointInfo(self.world_id, i)
+            print(joint_info)
+            joints.append(joint_info)
         return joints
 
     def change_joint_pos(self, joint_index: int, joint_pos: float):
