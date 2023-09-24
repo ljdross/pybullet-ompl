@@ -71,8 +71,7 @@ class Manipulation:
         trim(self.solution)
 
     def plan_action(self, action: Action):
-        joint_index = self.puzzle_state.joint_index_map[action.grip_point]
-        target_pos = self.get_target_pos(joint_index)
+        target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
 
         self.plan_and_move_to(target_pos_high)
@@ -80,29 +79,46 @@ class Manipulation:
 
         self.actuate(action)
 
-        target_pos = self.get_target_pos(joint_index)
+        target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
         self.plan_and_move_to(target_pos_high, True)
 
-    def get_target_pos(self, joint_index):
+    def get_target_pos(self, target_name: str):
+        joint_index = self.puzzle_state.joint_index_map[target_name]
         link_state = p.getLinkState(self.pb_ompl_world.id, joint_index)
-        pos = self.add_tuples(link_state[0], (0, 0, 0.15))
+        pos = self.add_tuples(link_state[0], (0, 0, 0.075))
         return pos
 
     def actuate(self, action: Action):
-        joint_index = self.puzzle_state.joint_index_map[action.grip_point]
-        diff = self.calculate_diff(action)
+        diff = self.target_diff(action)
         while abs(diff) > self.config.step_size:
+            current_state = self.pb_ompl_world.get_cur_state()
+
             if diff < 0:
                 self.puzzle_state.move_joint(action.joint_index, -self.config.step_size)
             else:
                 self.puzzle_state.move_joint(action.joint_index, self.config.step_size)
-            target_pos = self.get_target_pos(joint_index)
-            self.plan_and_move_to(target_pos, True)
-            diff = self.calculate_diff(action)
+            target_pos = self.get_target_pos(action.grip_point)
 
+            valid_ik_move = self.try_ik_move(target_pos, current_state)
 
-    def calculate_diff(self, action):
+            if not valid_ik_move:
+                self.plan_and_move_to(target_pos, True)
+
+            diff = self.target_diff(action)
+
+    def try_ik_move(self, target_pos, current_state):
+        new_state, is_valid = self.get_state(target_pos)
+        if is_valid:
+            # TODO: consider interpolating here
+            # interpolated = self.interpolate(current_state, new_state)
+            self.solution.append(new_state)
+            self.pb_ompl_world.set_state(new_state)
+            return True
+        else:
+            return False
+
+    def target_diff(self, action):
         target = action.joint_pos
         actual = self.puzzle_state.get_joint_pos(action.joint_index)
         return target - actual
@@ -197,7 +213,7 @@ class Manipulation:
         return tuple(map(lambda x, y: x + y, tuple_a, tuple_b))
         # Source: https://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
 
-    def execute(self, fps=200):
+    def execute(self, fps=60):
         for state in self.solution:
             self.pb_ompl_world.set_state(state)
             time.sleep(1. / fps)
