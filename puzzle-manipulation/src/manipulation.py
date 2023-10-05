@@ -6,6 +6,7 @@ import time
 import pybullet as p
 import pybullet_data
 
+SEED = 0
 NUM_RANDOM_START_STATES_FOR_IK = 1000
 
 dirname = os.path.dirname(os.path.realpath(__file__))
@@ -43,6 +44,8 @@ class Manipulation:
         self.pb_ompl_interface.set_planner(config.ompl_planner)
 
         self.ik = InverseKinematics(self.robot.id)
+
+        random.seed(SEED)
 
     def set_up_pybullet_environment(self):
         p.connect(p.GUI)
