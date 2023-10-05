@@ -1,19 +1,21 @@
-import math
 import os
+import random
 import sys
 import time
 
 import pybullet as p
 import pybullet_data
 
+NUM_RANDOM_START_STATES_FOR_IK = 1000
+
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dirname)
 
 import pb_ompl
-from file_utils.urdf_merger import merge_urdf_files
-from puzzle_state import PuzzleState
+from puzzle import Puzzle
 from configuration import Configuration
 from action import Action
+from inverse_kinematics import InverseKinematics
 from solution_trimmer import trim
 
 
@@ -21,167 +23,186 @@ class Manipulation:
     def __init__(self, config: Configuration):
         self.config = config
         self.solution = []
+        self.obstacles = []
 
-        self.merge_robot_and_puzzle()
         self.set_up_pybullet_environment()
-        world_id = self.load_world()
-        self.puzzle_state = PuzzleState(world_id, self.config)
-        self.pb_ompl_world, self.pb_ompl_interface = self.set_up_pb_ompl(world_id)
-        self.print_world_info()
 
-    def merge_robot_and_puzzle(self):
-        merge_urdf_files(self.config.robot_path, self.config.puzzle_path, self.config.merged_world_output_path)
+        plane_id = p.loadURDF("plane.urdf")
+        self.obstacles.append(plane_id)
+
+        puzzle_id = self.load(config.puzzle_urdf)
+        self.obstacles.append((puzzle_id, frozenset(list(range(p.getNumJoints(puzzle_id))))))
+        self.puzzle = Puzzle(puzzle_id, self.config)
+
+        robot_id = self.load(config.robot_urdf, (0, 0, 0.005))
+        self.robot = pb_ompl.PbOMPLRobot(robot_id)
+        self.robot.set_state(list(config.robot_start_state))
+
+        print("number of dimensions (robot) = " + str(self.robot.num_dim))
+        self.pb_ompl_interface = pb_ompl.PbOMPL(self.robot, self.obstacles)
+        self.pb_ompl_interface.set_planner(config.ompl_planner)
+
+        self.ik = InverseKinematics(self.robot.id)
 
     def set_up_pybullet_environment(self):
         p.connect(p.GUI)
         p.setGravity(0, 0, -9.8)
         p.setTimeStep(1. / 240.)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        p.loadURDF("plane.urdf")
 
-    def load_world(self):
-        orn = p.getQuaternionFromEuler((0, 0, 0))
-        world_id = p.loadURDF(self.config.merged_world_output_path, (0, 0, 0), orn, useFixedBase=1,
-                              flags=p.URDF_USE_SELF_COLLISION_INCLUDE_PARENT)
-        return world_id
+    def load(self, urdf: str, location=(0, 0, 0), rotation=(0, 0, 0), scale=1):
+        orn = p.getQuaternionFromEuler(rotation)
+        flags = p.URDF_USE_SELF_COLLISION_INCLUDE_PARENT
+        pb_id = p.loadURDF(urdf, location, orn, useFixedBase=1, flags=flags, globalScaling=scale)
 
-    def set_up_pb_ompl(self, world_id):
-        pb_ompl_world = pb_ompl.PbOMPLRobot(world_id)
+        print("\ninfo for " + urdf + ":")
+        self.print_joints(pb_id)
 
-        pb_ompl_interface = pb_ompl.PbOMPL(pb_ompl_world)
-        pb_ompl_interface.set_planner(self.config.ompl_planner)
+        return pb_id
 
-        start = list(self.config.robot_start_state + self.config.puzzle_start_state)
-        pb_ompl_world.set_state(start)
-
-        return pb_ompl_world, pb_ompl_interface
-
-    def print_world_info(self):
-        print("=" * 100)
-        for i in range(p.getNumJoints(self.pb_ompl_world.id)):
-            print(p.getJointInfo(self.pb_ompl_world.id, i))
-        print("number of joints = " + str(p.getNumJoints(self.pb_ompl_world.id)))
-        print("number of dimensions = " + str(self.pb_ompl_world.num_dim))
-        print("=" * 100)
+    def print_joints(self, id):
+        print("\nnumber of joints = " + str(p.getNumJoints(id)))
+        for i in range(p.getNumJoints(id)):
+            print(p.getJointInfo(id, i))
+        print("\n")
 
     def plan(self):
+        # self.debug()
+
         for action in self.config.action_sequence:
             self.plan_action(action)
 
-        trim(self.solution)
+    def debug(self):
+        self.robot.set_state([-0.02671, 0.42166, -0.2728, -0.13667, -0.60573, -2.36092, -0.09954, 0.89569, -0.81182])
+        self.puzzle.set_state([0.28, 0.24, -1.56, 0.24])
+        time.sleep(60 * 10)
 
     def plan_action(self, action: Action):
         target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
 
-        self.plan_and_move_to(target_pos_high)
-        self.plan_and_move_to(target_pos, True)
+        self.plan_and_move_to_pos(target_pos_high)
+        self.plan_and_move_to_pos(target_pos)
 
         self.actuate(action)
 
         target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
-        self.plan_and_move_to(target_pos_high, True)
+        self.plan_and_move_to_pos(target_pos_high)
 
     def get_target_pos(self, target_name: str):
-        joint_index = self.puzzle_state.joint_index_map[target_name]
-        link_state = p.getLinkState(self.pb_ompl_world.id, joint_index)
+        joint_index = self.puzzle.joint_index_map[target_name]
+        link_state = p.getLinkState(self.puzzle.id, joint_index)
         pos = self.add_tuples(link_state[0], (0, 0, 0.075))
         return pos
 
     def actuate(self, action: Action):
         diff = self.target_diff(action)
         while abs(diff) > self.config.step_size:
-            current_state = self.pb_ompl_world.get_cur_state()
 
-            if diff < 0:
-                self.puzzle_state.move_joint(action.joint_index, -self.config.step_size)
-            else:
-                self.puzzle_state.move_joint(action.joint_index, self.config.step_size)
-            target_pos = self.get_target_pos(action.grip_point)
+            start_pos = self.get_target_pos(action.grip_point)
+            current_start_state = self.robot.get_cur_state()
 
-            valid_ik_move = self.try_ik_move(target_pos, current_state)
+            self.move_puzzle_forward(action, diff)
+            if not self.is_valid(current_start_state):
 
-            if not valid_ik_move:
-                self.plan_and_move_to(target_pos, True)
+                self.move_puzzle_backward(action, diff)
+                new_start_state = self.get_valid_state(start_pos, action, diff)
+                self.interpolate_or_plan(new_start_state)
+                self.move_puzzle_forward(action, diff)
+
+            goal_pos = self.get_target_pos(action.grip_point)
+            goal_state = self.get_valid_state(goal_pos)
+
+            self.move_puzzle_backward(action, diff)
+            if not self.is_valid(goal_state):
+
+                goal_state = self.get_valid_state(goal_pos, action, diff)
+
+            self.interpolate_or_plan(goal_state)
+
+            self.move_puzzle_forward(action, diff)
 
             diff = self.target_diff(action)
 
-    def try_ik_move(self, target_pos, current_state):
-        new_state, is_valid = self.get_state(target_pos)
-        if is_valid:
-            # TODO: consider interpolating here
-            # interpolated = self.interpolate(current_state, new_state)
-            self.solution.append(new_state)
-            self.pb_ompl_world.set_state(new_state)
-            return True
+    def interpolate_or_plan(self, goal_state):
+        # if self.minor_diff(goal_state):  # TODO
+        #     self.interpolate(goal_state)
+        #     return
+
+        self.plan_and_move_to_state(goal_state)
+
+    def plan_and_move_to_state(self, state):
+        success, path = self.pb_ompl_interface.plan(state)
+        if success:
+            trim(path)
+            self.solution.extend(path)
+            self.robot.set_state(path[-1])
+            self.puzzle.add_current_state_to_solution(len(path))
         else:
-            return False
+            raise Exception("Planning failed")
+
+    def move_puzzle_forward(self, action, diff):
+        if diff < 0:
+            self.puzzle.move_joint(action.joint_index, -self.config.step_size)
+        else:
+            self.puzzle.move_joint(action.joint_index, self.config.step_size)
+
+    def move_puzzle_backward(self, action, diff):
+        if diff < 0:
+            self.puzzle.move_joint(action.joint_index, self.config.step_size)
+        else:
+            self.puzzle.move_joint(action.joint_index, -self.config.step_size)
 
     def target_diff(self, action):
         target = action.joint_pos
-        actual = self.puzzle_state.get_joint_pos(action.joint_index)
+        actual = self.puzzle.get_joint_pos(action.joint_index)
         return target - actual
 
-    def plan_and_move_to(self, pos, double_speed=False):
-        pos_state, is_valid = self.get_valid_state(pos)
-        res, path = self.pb_ompl_interface.plan(pos_state)
-        if res:
-            if double_speed:
-                del path[::2]
-            self.solution.extend(path)
-            self.pb_ompl_world.set_state(path[-1])
+    def plan_and_move_to_pos(self, pos):
+        state = self.get_valid_state(pos)
+        self.plan_and_move_to_state(state)
 
-    def get_states(self, trajectory, puzzle_joint_index):
-        states = []
-        puzzle_joint_pos = 0
-
-        for pos in trajectory:
-            self.puzzle_state.change_joint_pos(puzzle_joint_index, puzzle_joint_pos)
-            state, is_valid = self.get_state(pos)
-            state = list(state)
-            states.append(state)
-            puzzle_joint_pos += self.config.step_size
-
-        print(states[-1])
-        self.solution.extend(states)
-        self.pb_ompl_world.set_state(states[-1])
-        return states
-
-    def get_valid_state(self, pos):
-        original_state = self.pb_ompl_world.get_cur_state()
-        pos_state, is_valid = self.get_state(pos)
+    def get_valid_state(self, pos, action=None, diff=None):
+        state, is_valid = self.get_state_for_moving_puzzle(pos, action, diff)
         if is_valid:
-            self.pb_ompl_world.set_state(original_state)
-            return pos_state, is_valid
+            return state
 
-        for i in range(8):
-            for j in range(8):
-                state = self.pb_ompl_world.get_cur_state()
-                state[0] = i - 3.5
-                state[1] = j - 3.5
-                self.pb_ompl_world.set_state(state)
-                pos_state, is_valid = self.get_state(pos)
-                if is_valid:
-                    self.pb_ompl_world.set_state(original_state)
-                    return pos_state, is_valid
+        original_state = self.robot.get_cur_state()
+        for i in range(NUM_RANDOM_START_STATES_FOR_IK):
+            start_state = self.get_random_state()
+            self.robot.set_state(start_state)
+            state, is_valid = self.get_state_for_moving_puzzle(pos, action, diff)
+            if is_valid:
+                self.robot.set_state(original_state)
+                return state
 
-        self.pb_ompl_world.set_state(original_state)
-        return pos_state, is_valid
+        self.robot.set_state(original_state)
+        raise Exception("Could not sample valid state")
+
+    def get_random_state(self):
+        m = map(self.random_num, self.robot.joint_bounds)
+        return list(m)
+
+    def random_num(self, limits):
+        r = random.uniform(limits[0], limits[1])
+        return round(r, 5)
+
+    def get_state_for_moving_puzzle(self, pos, action, diff):
+        state, is_valid = self.get_state(pos)
+
+        if action is None:
+            return state, is_valid
+
+        self.move_puzzle_forward(action, diff)
+        is_still_valid = self.is_valid(state)
+        self.move_puzzle_backward(action, diff)
+
+        return state, is_valid and is_still_valid
 
     def get_state(self, pos):
-        end_effector_index = 8
-        orn = p.getQuaternionFromEuler((0, math.pi, 0))
-
-        state = list(p.calculateInverseKinematics(self.pb_ompl_world.id, end_effector_index, pos, orn, maxNumIterations=300))
-
-        for i in range(len(state)):
-            state[i] = round(state[i], 5)  # otherwise some states might be slightly out of joint bounds
-
-        temp_state = self.pb_ompl_world.get_cur_state()
-        is_valid = self.pb_ompl_interface.is_state_valid(state)
-        self.pb_ompl_world.set_state(temp_state)
-
+        state = self.ik.solve(pos)
+        is_valid = self.is_valid(state)
         return state, is_valid
 
     def calculate_trajectory(self, start, end, step_size):
@@ -213,9 +234,25 @@ class Manipulation:
         return tuple(map(lambda x, y: x + y, tuple_a, tuple_b))
         # Source: https://stackoverflow.com/questions/497885/python-element-wise-tuple-operations-like-sum
 
+    def is_valid(self, state):
+        temp_state = self.robot.get_cur_state()
+        no_collision = self.pb_ompl_interface.is_state_valid(state)
+        within_joint_bounds = self.is_within_joint_bounds(state)
+        self.robot.set_state(temp_state)
+        return no_collision and within_joint_bounds
+
+    def is_within_joint_bounds(self, state):
+        for i in range(len(state)):
+            lower = self.robot.joint_bounds[i][0]
+            upper = self.robot.joint_bounds[i][1]
+            if state[i] < lower or state[i] > upper:
+                return False
+        return True
+
     def execute(self, fps=60):
-        for state in self.solution:
-            self.pb_ompl_world.set_state(state)
+        for robot_state, puzzle_state in zip(self.solution, self.puzzle.solution):
+            self.robot.set_state(robot_state)
+            self.puzzle.set_state(puzzle_state)
             time.sleep(1. / fps)
 
         time.sleep(4.)

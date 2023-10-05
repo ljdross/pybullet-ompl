@@ -5,9 +5,8 @@ from action import Action
 
 @dataclass
 class Configuration:
-    robot_path: str
-    puzzle_path: str
-    merged_world_output_path: str
+    robot_urdf: str
+    puzzle_urdf: str
     robot_start_state: tuple[float, ...]
     puzzle_start_state: tuple[float, ...]
     action_sequence: tuple[Action, ...]
