@@ -1,4 +1,4 @@
-MAX_JOINT_MOVEMENT_PER_FRAME = 0.002
+MAX_JOINT_MOVEMENT_PER_FRAME = 0.01
 
 
 def trim(solution: list[list, ...]):

@@ -7,22 +7,24 @@ import pybullet as p
 import pybullet_data
 
 SEED = 0
-NUM_RANDOM_START_STATES_FOR_IK = 1000
+RANDOM_START_STATES_FOR_IK_NUM = 1000
+GRIP_ACTION_HEIGHT = 0.5
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dirname)
 
 import pb_ompl
 from puzzle import Puzzle
-from configuration import Configuration
-from action import Action
+from configurations.classes.configuration import Action, Configuration
+from configurations.classes.manipulation_parameters import Parameters
 from inverse_kinematics import InverseKinematics
 from solution_trimmer import trim
 
 
 class Manipulation:
-    def __init__(self, config: Configuration):
+    def __init__(self, config: Configuration, parameters: Parameters):
         self.config = config
+        self.parameters = parameters
         self.solution = []
         self.obstacles = []
 
@@ -35,13 +37,13 @@ class Manipulation:
         self.obstacles.append((puzzle_id, frozenset(list(range(p.getNumJoints(puzzle_id))))))
         self.puzzle = Puzzle(puzzle_id, self.config)
 
-        robot_id = self.load(config.robot_urdf, (0, 0, 0.005))
+        robot_id = self.load(config.robot_urdf, (0, 0, 0.005), scale=4)
         self.robot = pb_ompl.PbOMPLRobot(robot_id)
         self.robot.set_state(list(config.robot_start_state))
 
         print("number of dimensions (robot) = " + str(self.robot.num_dim))
         self.pb_ompl_interface = pb_ompl.PbOMPL(self.robot, self.obstacles)
-        self.pb_ompl_interface.set_planner(config.ompl_planner)
+        self.pb_ompl_interface.set_planner(parameters.ompl_planner)
 
         self.ik = InverseKinematics(self.robot.id)
 
@@ -82,7 +84,7 @@ class Manipulation:
 
     def plan_action(self, action: Action):
         target_pos = self.get_target_pos(action.grip_point)
-        target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
+        target_pos_high = self.add_tuples(target_pos, (0, 0, GRIP_ACTION_HEIGHT))
 
         self.plan_and_move_to_pos(target_pos_high)
         self.plan_and_move_to_pos(target_pos)
@@ -90,18 +92,19 @@ class Manipulation:
         self.actuate(action)
 
         target_pos = self.get_target_pos(action.grip_point)
-        target_pos_high = self.add_tuples(target_pos, (0, 0, 0.3))
+        target_pos_high = self.add_tuples(target_pos, (0, 0, GRIP_ACTION_HEIGHT))
         self.plan_and_move_to_pos(target_pos_high)
 
     def get_target_pos(self, target_name: str):
         joint_index = self.puzzle.joint_index_map[target_name]
-        link_state = p.getLinkState(self.puzzle.id, joint_index)
-        pos = self.add_tuples(link_state[0], (0, 0, 0.075))
+        world_pos = p.getLinkState(self.puzzle.id, joint_index)[0]
+        collision_scale = p.getCollisionShapeData(self.puzzle.id, joint_index)[0][3]
+        pos = self.add_tuples(world_pos, (0, 0, collision_scale[2] + 0.1))
         return pos
 
     def actuate(self, action: Action):
         diff = self.target_diff(action)
-        while abs(diff) > self.config.step_size:
+        while abs(diff) > self.parameters.step_size:
 
             start_pos = self.get_target_pos(action.grip_point)
             current_start_state = self.robot.get_cur_state()
@@ -147,15 +150,15 @@ class Manipulation:
 
     def move_puzzle_forward(self, action, diff):
         if diff < 0:
-            self.puzzle.move_joint(action.joint_index, -self.config.step_size)
+            self.puzzle.move_joint(action.joint_index, -self.parameters.step_size)
         else:
-            self.puzzle.move_joint(action.joint_index, self.config.step_size)
+            self.puzzle.move_joint(action.joint_index, self.parameters.step_size)
 
     def move_puzzle_backward(self, action, diff):
         if diff < 0:
-            self.puzzle.move_joint(action.joint_index, self.config.step_size)
+            self.puzzle.move_joint(action.joint_index, self.parameters.step_size)
         else:
-            self.puzzle.move_joint(action.joint_index, -self.config.step_size)
+            self.puzzle.move_joint(action.joint_index, -self.parameters.step_size)
 
     def target_diff(self, action):
         target = action.joint_pos
@@ -172,7 +175,7 @@ class Manipulation:
             return state
 
         original_state = self.robot.get_cur_state()
-        for i in range(NUM_RANDOM_START_STATES_FOR_IK):
+        for i in range(RANDOM_START_STATES_FOR_IK_NUM):
             start_state = self.get_random_state()
             self.robot.set_state(start_state)
             state, is_valid = self.get_state_for_moving_puzzle(pos, action, diff)

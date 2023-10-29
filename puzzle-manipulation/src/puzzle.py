@@ -1,5 +1,5 @@
 import pybullet as p
-from configuration import Configuration
+from configurations.classes.configuration import Configuration
 
 
 class Puzzle:
