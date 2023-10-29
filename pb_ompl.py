@@ -20,6 +20,7 @@ from itertools import product
 import copy
 
 INTERPOLATE_NUM = 500
+SIMPLIFY_NUM = 5
 DEFAULT_PLANNING_TIME = 5.0
 
 class PbOMPLRobot():
@@ -227,6 +228,10 @@ class PbOMPL():
 
         # attempt to solve the problem within allowed planning time
         solved = self.ss.solve(allowed_time)
+
+        for _ in range(SIMPLIFY_NUM):
+            self.ss.simplifySolution()
+
         res = False
         sol_path_list = []
         if solved:
