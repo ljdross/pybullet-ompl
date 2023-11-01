@@ -15,16 +15,14 @@ sys.path.append(dirname)
 
 import pb_ompl
 from puzzle import Puzzle
-from configurations.classes.configuration import Action, Configuration
-from configurations.classes.manipulation_parameters import Parameters
+from config.configuration import Action, Configuration
 from inverse_kinematics import InverseKinematics
 from solution_trimmer import trim
 
 
 class Manipulation:
-    def __init__(self, config: Configuration, parameters: Parameters):
+    def __init__(self, config: Configuration):
         self.config = config
-        self.parameters = parameters
         self.solution = []
         self.obstacles = []
 
@@ -43,7 +41,7 @@ class Manipulation:
 
         print("number of dimensions (robot) = " + str(self.robot.num_dim))
         self.pb_ompl_interface = pb_ompl.PbOMPL(self.robot, self.obstacles)
-        self.pb_ompl_interface.set_planner(parameters.ompl_planner)
+        self.pb_ompl_interface.set_planner(config.ompl_planner)
 
         self.ik = InverseKinematics(self.robot.id)
 
@@ -104,7 +102,7 @@ class Manipulation:
 
     def actuate(self, action: Action):
         diff = self.target_diff(action)
-        while abs(diff) > self.parameters.step_size:
+        while abs(diff) > self.config.step_size:
 
             start_pos = self.get_target_pos(action.grip_point)
             current_start_state = self.robot.get_cur_state()
@@ -150,15 +148,15 @@ class Manipulation:
 
     def move_puzzle_forward(self, action, diff):
         if diff < 0:
-            self.puzzle.move_joint(action.joint_index, -self.parameters.step_size)
+            self.puzzle.move_joint(action.joint_index, -self.config.step_size)
         else:
-            self.puzzle.move_joint(action.joint_index, self.parameters.step_size)
+            self.puzzle.move_joint(action.joint_index, self.config.step_size)
 
     def move_puzzle_backward(self, action, diff):
         if diff < 0:
-            self.puzzle.move_joint(action.joint_index, self.parameters.step_size)
+            self.puzzle.move_joint(action.joint_index, self.config.step_size)
         else:
-            self.puzzle.move_joint(action.joint_index, -self.parameters.step_size)
+            self.puzzle.move_joint(action.joint_index, -self.config.step_size)
 
     def target_diff(self, action):
         target = action.joint_pos

@@ -1,12 +1,18 @@
+import sys
+
 from src.manipulation import Manipulation
-from src.configurations import challenges, manipulation_arguments
+from src.config.config_parser import ConfigParser
 
 
 def main():
-    config = challenges.simple_sliders
-    parameters = manipulation_arguments.defaults
+    config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/simple_sliders_config.json'
+    defaults_json = sys.argv[2] if len(sys.argv) > 2 else './configurations/defaults.json'
 
-    manipulation = Manipulation(config, parameters)
+    config_parser = ConfigParser(config_json, defaults_json)
+
+    config = config_parser.parse()
+
+    manipulation = Manipulation(config)
     manipulation.plan()
     manipulation.execute()
 

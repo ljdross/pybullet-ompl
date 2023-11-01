@@ -1,0 +1,4 @@
+{
+  "ompl_planner": "BITstar",
+  "step_size": 0.04
+}

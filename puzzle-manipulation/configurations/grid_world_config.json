@@ -1,0 +1,12 @@
+{
+  "robot_urdf": "/home/le/ba/pybullet-ompl/models/kuka_iiwa/model_in_2d_plane.urdf",
+  "puzzle_urdf": "/home/le/ba/puzzle-generator/puzzles/grid_world/urdf/grid_world.urdf",
+  "robot_start_state": [-4, -4, 0, 0, 0, -1, 0, 1.5, 0],
+  "puzzle_start_state": [0, 0, 0, 0],
+  "action_sequence": [
+    [3, 1, "link_fixed_13_handle_knob"],
+    [2, -1.5708, "link_fixed_10_handle_knob"],
+    [1, 1, "link_fixed_6_handle_knob"],
+    [0, 1.5708, "link_fixed_3_handle_knob"]
+  ]
+}
