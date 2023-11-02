@@ -2,6 +2,7 @@ import sys
 
 from src.manipulation import Manipulation
 from src.config.config_parser import ConfigParser
+from src import obs
 
 
 def main():
@@ -14,7 +15,10 @@ def main():
 
     manipulation = Manipulation(config)
     manipulation.plan()
+
+    obs.start_recording()
     manipulation.execute()
+    obs.stop_recording()
 
 
 if __name__ == '__main__':

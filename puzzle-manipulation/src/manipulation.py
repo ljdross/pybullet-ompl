@@ -263,4 +263,4 @@ class Manipulation:
             self.puzzle.set_state(puzzle_state)
             time.sleep(1. / fps)
 
-        time.sleep(4.)
+        time.sleep(4)
