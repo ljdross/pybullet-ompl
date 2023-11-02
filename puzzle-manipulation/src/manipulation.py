@@ -48,11 +48,14 @@ class Manipulation:
         random.seed(SEED)
 
     def set_up_pybullet_environment(self):
-        p.connect(p.GUI)
-        p.setGravity(0, 0, -9.8)
-        p.setTimeStep(1. / 240.)
-        p.setAdditionalSearchPath(pybullet_data.getDataPath())
-        p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+        if p.isConnected():
+            p.resetSimulation()
+        else:
+            p.connect(p.GUI)
+            p.setGravity(0, 0, -9.8)
+            p.setTimeStep(1. / 240.)
+            p.setAdditionalSearchPath(pybullet_data.getDataPath())
+            p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
 
     def load(self, urdf: str, location=(0, 0, 0), rotation=(0, 0, 0), scale=1):
         orn = p.getQuaternionFromEuler(rotation)
