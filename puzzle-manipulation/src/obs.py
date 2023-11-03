@@ -10,5 +10,5 @@ def start_recording():
 def stop_recording():
     cl = obs.ReqClient()
     cl.stop_record()
-    time.sleep(6)
+    time.sleep(10)
 
