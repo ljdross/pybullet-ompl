@@ -56,6 +56,21 @@ class Manipulation:
             p.setTimeStep(1. / 240.)
             p.setAdditionalSearchPath(pybullet_data.getDataPath())
             p.configureDebugVisualizer(p.COV_ENABLE_GUI, 0)
+            self.position_camera()
+
+    def position_camera(self):
+        camera_info = p.getDebugVisualizerCamera()
+        print('camera info: ' + str(camera_info))
+        yaw = camera_info[8]
+        pitch = camera_info[9]
+        dist = camera_info[10]
+        target_pos = camera_info[11]
+        pitch = -55
+        dist = 6
+        target_pos = (2, -2, 0)
+        p.resetDebugVisualizerCamera(dist, yaw, pitch, target_pos)
+        camera_info = p.getDebugVisualizerCamera()
+        print('camera info: ' + str(camera_info))
 
     def load(self, urdf: str, location=(0, 0, 0), rotation=(0, 0, 0), scale=1):
         orn = p.getQuaternionFromEuler(rotation)
