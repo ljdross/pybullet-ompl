@@ -12,6 +12,7 @@ def main():
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/lockbox2017.json'
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/lockbox_random3.json'
     config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/rooms0.json'
+
     defaults_json = sys.argv[2] if len(sys.argv) > 2 else './configurations/defaults.json'
 
     config_parser = ConfigParser(config_json, defaults_json)

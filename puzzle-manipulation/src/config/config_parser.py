@@ -41,7 +41,7 @@ class ConfigParser:
         elif key in self.defaults:
             return self.defaults[key]
         else:
-            raise Exception('Key: "' + key + '" neither found in config, nor defaults!')
+            raise Exception('Key: "' + key + '" neither found in config, nor in defaults!')
 
     def deserialize_action_sequence(self, value):
         sequence = []
