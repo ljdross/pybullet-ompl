@@ -16,8 +16,8 @@ def check_following(i: int, solution: list[list, ...]):
             return
 
 
-def minor_diff(state1: list, state2: list):
+def minor_diff(state1: list, state2: list, max_joint_diff=MAX_JOINT_MOVEMENT_PER_FRAME):
     for i, _ in enumerate(state1):
-        if abs(state1[i] - state2[i]) > MAX_JOINT_MOVEMENT_PER_FRAME:
+        if abs(state1[i] - state2[i]) > max_joint_diff:
             return False
     return True

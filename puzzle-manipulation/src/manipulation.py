@@ -17,7 +17,7 @@ import pb_ompl
 from puzzle import Puzzle
 from config.configuration import Action, Configuration
 from inverse_kinematics import InverseKinematics
-from solution_trimmer import trim
+from solution_trimmer import trim, minor_diff
 
 
 class Manipulation:
@@ -93,6 +93,7 @@ class Manipulation:
 
         for action in self.config.action_sequence:
             self.plan_action(action)
+        self.release(self.config.action_sequence[-1])
 
     def debug(self):
         self.robot.set_state([-0.02671, 0.42166, -0.2728, -0.13667, -0.60573, -2.36092, -0.09954, 0.89569, -0.81182])
@@ -100,14 +101,17 @@ class Manipulation:
         time.sleep(60 * 10)
 
     def plan_action(self, action: Action):
+        self.grab(action)
+        self.actuate(action)
+
+    def grab(self, action):
         target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, GRIP_ACTION_HEIGHT))
 
         self.plan_and_move_to_pos(target_pos_high)
         self.plan_and_move_to_pos(target_pos)
 
-        self.actuate(action)
-
+    def release(self, action):
         target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, GRIP_ACTION_HEIGHT))
         self.plan_and_move_to_pos(target_pos_high)
@@ -153,17 +157,32 @@ class Manipulation:
         #     self.interpolate(goal_state)
         #     return
 
-        self.plan_and_move_to_state(goal_state)
+        self.plan_and_move_to_state_fast(goal_state)
+
+    def plan_and_move_to_state_fast(self, state):
+        start_state = self.robot.get_cur_state()
+
+        success, path = self.pb_ompl_interface.plan_fast(state)
+
+        if success and minor_diff(start_state, path[-1], 0.1):
+            self.solution_append(path)
+        else:
+            self.robot.set_state(start_state)
+            self.plan_and_move_to_state(state)
 
     def plan_and_move_to_state(self, state):
         success, path = self.pb_ompl_interface.plan(state)
+
         if success:
-            trim(path)
-            self.solution.extend(path)
-            self.robot.set_state(path[-1])
-            self.puzzle.add_current_state_to_solution(len(path))
+            self.solution_append(path)
         else:
             raise Exception("Planning failed")
+
+    def solution_append(self, path):
+        trim(path)
+        self.solution.extend(path)
+        self.robot.set_state(path[-1])
+        self.puzzle.add_current_state_to_solution(len(path))
 
     def move_puzzle_forward(self, action, diff):
         if diff < 0:
