@@ -18,10 +18,13 @@ import utils
 import time
 from itertools import product
 import copy
+import math
+import random
 
 INTERPOLATE_NUM = 500
 SIMPLIFY_NUM = 5
 DEFAULT_PLANNING_TIME = 5.0
+
 
 class PbOMPLRobot():
     '''
@@ -201,6 +204,14 @@ class PbOMPL():
             self.planner = og.FMT(self.ss.getSpaceInformation())
         elif planner_name == "BITstar":
             self.planner = og.BITstar(self.ss.getSpaceInformation())
+        elif planner_name == "AITstar":
+            self.planner = og.AITstar(self.ss.getSpaceInformation())
+        elif planner_name == "KPIECE1":
+            self.planner = og.KPIECE1(self.ss.getSpaceInformation())
+        elif planner_name == "BKPIECE1":
+            self.planner = og.BKPIECE1(self.ss.getSpaceInformation())
+        elif planner_name == "LBKPIECE1":
+            self.planner = og.LBKPIECE1(self.ss.getSpaceInformation())
         else:
             print("{} not recognized, please add it first".format(planner_name))
             return
@@ -216,15 +227,22 @@ class PbOMPL():
 
         orig_robot_state = self.robot.get_cur_state()
 
-        # set the start and goal states;
+        self.ss.clear()
+
+        # set the start state;
         s = ob.State(self.space)
-        g = ob.State(self.space)
         for i in range(len(start)):
             s[i] = start[i]
-            g[i] = goal[i]
+        self.ss.setStartState(s)
 
-        self.ss.clear()
-        self.ss.setStartAndGoalStates(s, g)
+        # set goal
+        if isinstance(goal, IKGoal):
+            self.ss.setGoal(goal)
+        else:
+            g = ob.State(self.space)
+            for i in range(len(goal)):
+                g[i] = goal[i]
+            self.ss.setGoalState(g)
 
         # attempt to solve the problem within allowed planning time
         solved = self.ss.solve(allowed_time)
@@ -256,12 +274,22 @@ class PbOMPL():
     def plan_fast(self, goal):
         return self.plan(goal, 1.0, 5, 0)
 
-    def plan(self, goal, allowed_time=DEFAULT_PLANNING_TIME, interpolate_num=INTERPOLATE_NUM, simplify_num=SIMPLIFY_NUM):
+    def plan(self, goal_state, allowed_time=DEFAULT_PLANNING_TIME, interpolate_num=INTERPOLATE_NUM, simplify_num=SIMPLIFY_NUM):
         '''
         plan a path to gaol from current robot state
         '''
         start = self.robot.get_cur_state()
-        return self.plan_start_goal(start, goal, allowed_time, interpolate_num, simplify_num)
+        return self.plan_start_goal(start, goal_state, allowed_time, interpolate_num, simplify_num)
+
+    def plan_ik(self, end_effector_goal_pos, allowed_time=DEFAULT_PLANNING_TIME, interpolate_num=INTERPOLATE_NUM, simplify_num=SIMPLIFY_NUM):
+        '''
+        WARNING: This method does not work well with all planners (PRM seems to work).
+        Sample a goal state for a given `end_effector_goal_pos` using IK,
+        and plan a path to that gaol from the current robot state
+        '''
+        start = self.robot.get_cur_state()
+        ik_goal = IKGoal(self.si, end_effector_goal_pos, self.robot)
+        return self.plan_start_goal(start, ik_goal, allowed_time, interpolate_num, simplify_num)
 
     def execute(self, path, dynamics=False):
         '''
@@ -295,3 +323,49 @@ class PbOMPL():
 
     def state_to_list(self, state):
         return [state[i] for i in range(self.robot.num_dim)]
+
+
+class IKGoal(ob.GoalSampleableRegion):
+    def __init__(self, si, pos, robot):
+        super(IKGoal, self).__init__(si)
+        self.pos = pos
+        self.ik = InverseKinematics(robot)
+
+    def maxSampleCount(self):
+        return 1000000
+
+    def sampleGoal(self, state):
+        res = self.ik.solve(self.pos)
+        for i in range(len(res)):
+            state[i] = res[i]
+        return state
+
+
+class InverseKinematics:
+    def __init__(self, robot):
+        self.robot = robot
+        self.end_effector_index = 8
+        self.orn = p.getQuaternionFromEuler((0, math.pi, 0))
+        self.iterations = 300
+
+    def solve(self, pos):
+        original_state = self.robot.get_cur_state()
+
+        start_state = self.get_random_state()
+        self.robot.set_state(start_state)
+        state = p.calculateInverseKinematics(self.robot.id, self.end_effector_index, pos, self.orn, maxNumIterations=self.iterations)
+        state = list(state)
+
+        for i in range(len(state)):
+            state[i] = round(state[i], 5)  # otherwise some states might be slightly out of joint bounds
+
+        self.robot.set_state(original_state)
+        return state
+
+    def get_random_state(self):
+        m = map(self.random_num, self.robot.joint_bounds)
+        return list(m)
+
+    def random_num(self, limits):
+        r = random.uniform(limits[0], limits[1])
+        return round(r, 5)
