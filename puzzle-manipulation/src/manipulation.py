@@ -7,7 +7,7 @@ import pybullet as p
 import pybullet_data
 
 SEED = 0
-RANDOM_START_STATES_FOR_IK_NUM = 1000
+RANDOM_START_STATES_FOR_IK_NUM = 100000
 GRIP_ACTION_HEIGHT = 0.5
 
 dirname = os.path.dirname(os.path.realpath(__file__))
@@ -93,7 +93,8 @@ class Manipulation:
 
         for action in self.config.action_sequence:
             self.plan_action(action)
-        self.release(self.config.action_sequence[-1])
+
+        self.plan_and_move_to_state(self.config.robot_final_state)
 
     def debug(self):
         self.robot.set_state([-0.02671, 0.42166, -0.2728, -0.13667, -0.60573, -2.36092, -0.09954, 0.89569, -0.81182])
@@ -119,8 +120,9 @@ class Manipulation:
     def get_target_pos(self, target_name: str):
         joint_index = self.puzzle.joint_index_map[target_name]
         world_pos = p.getLinkState(self.puzzle.id, joint_index)[0]
-        collision_scale = p.getCollisionShapeData(self.puzzle.id, joint_index)[0][3]
-        pos = self.add_tuples(world_pos, (0, 0, collision_scale[2] + 0.1))
+        shape_data = p.getCollisionShapeData(self.puzzle.id, joint_index)[0]
+        scale = shape_data[3]
+        pos = self.add_tuples(world_pos, (0, 0, scale[2]))
         return pos
 
     def actuate(self, action: Action):
@@ -171,12 +173,21 @@ class Manipulation:
             self.plan_and_move_to_state(state)
 
     def plan_and_move_to_state(self, state):
+        self.print_planning_info(state)
+
         success, path = self.pb_ompl_interface.plan(state)
 
         if success:
             self.solution_append(path)
         else:
             raise Exception("Planning failed")
+
+    def print_planning_info(self, state):
+        print("-" * 100)
+        print("Planning")
+        print("start: " + str(self.robot.get_cur_state()))
+        print("goal:  " + str(state))
+        print("-" * 100)
 
     def solution_append(self, path):
         trim(path)
