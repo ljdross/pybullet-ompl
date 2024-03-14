@@ -182,11 +182,11 @@ class Manipulation:
         else:
             raise Exception("Planning failed")
 
-    def print_planning_info(self, state):
+    def print_planning_info(self, goal):
         print("-" * 100)
         print("Planning")
         print("start: " + str(self.robot.get_cur_state()))
-        print("goal:  " + str(state))
+        print("goal:  " + str(goal))
         print("-" * 100)
 
     def solution_append(self, path):
@@ -217,6 +217,7 @@ class Manipulation:
         self.plan_and_move_to_state(state)
 
     def get_valid_state(self, pos, action=None, diff=None):
+        print("sampling valid state...")
         state, is_valid = self.get_state_for_moving_puzzle(pos, action, diff)
         if is_valid:
             return state
