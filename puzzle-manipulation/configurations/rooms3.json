@@ -1,5 +1,6 @@
 {
   "robot_urdf": "../models/kuka_iiwa/model_in_2d_plane.urdf",
+  "robot_scale": 2.0,
   "puzzle_urdf": "../../puzzle-generator/puzzles/rooms3/urdf/rooms3.urdf",
   "robot_start_state": [0, 0, 0, 0, 0, -1, 0, 1.5, 0],
   "robot_final_state": [-4, 4, 0, 0, 0, -1, 0, 1.5, 0],

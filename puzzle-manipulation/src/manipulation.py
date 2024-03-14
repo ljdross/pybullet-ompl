@@ -35,7 +35,7 @@ class Manipulation:
         self.obstacles.append((puzzle_id, frozenset(list(range(p.getNumJoints(puzzle_id))))))
         self.puzzle = Puzzle(puzzle_id, self.config)
 
-        robot_id = self.load(config.robot_urdf, (0, 0, 0.005), scale=4)
+        robot_id = self.load(config.robot_urdf, (0, 0, 0.005), scale=config.robot_scale)
         self.robot = pb_ompl.PbOMPLRobot(robot_id)
         self.robot.set_state(list(config.robot_start_state))
 
@@ -72,7 +72,7 @@ class Manipulation:
         camera_info = p.getDebugVisualizerCamera()
         print('camera info: ' + str(camera_info))
 
-    def load(self, urdf: str, location=(0, 0, 0), rotation=(0, 0, 0), scale=1):
+    def load(self, urdf: str, location=(0, 0, 0), rotation=(0, 0, 0), scale=1.0):
         orn = p.getQuaternionFromEuler(rotation)
         flags = p.URDF_USE_SELF_COLLISION_INCLUDE_PARENT
         pb_id = p.loadURDF(urdf, location, orn, useFixedBase=1, flags=flags, globalScaling=scale)

@@ -11,6 +11,7 @@ class Action:
 @dataclass
 class Configuration:
     robot_urdf: str
+    robot_scale: float
     robot_start_state: tuple[float, ...]
     robot_final_state: tuple[float, ...]
 

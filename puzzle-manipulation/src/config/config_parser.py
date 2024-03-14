@@ -19,6 +19,7 @@ class ConfigParser:
     def parse(self) -> Configuration:
         return Configuration(
             robot_urdf=self.get('robot_urdf'),
+            robot_scale=self.get('robot_scale'),
             robot_start_state=self.get('robot_start_state'),
             robot_final_state=self.get('robot_final_state'),
 
