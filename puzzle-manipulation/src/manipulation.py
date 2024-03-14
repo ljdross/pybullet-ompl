@@ -7,7 +7,7 @@ import pybullet as p
 import pybullet_data
 
 SEED = 0
-RANDOM_START_STATES_FOR_IK_NUM = 100000
+RANDOM_START_STATES_FOR_IK_NUM = 40000
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dirname)
