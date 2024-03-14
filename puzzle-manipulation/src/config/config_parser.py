@@ -19,10 +19,12 @@ class ConfigParser:
     def parse(self) -> Configuration:
         return Configuration(
             robot_urdf=self.get('robot_urdf'),
-            puzzle_urdf=self.get('puzzle_urdf'),
             robot_start_state=self.get('robot_start_state'),
             robot_final_state=self.get('robot_final_state'),
+
+            puzzle_urdf=self.get('puzzle_urdf'),
             puzzle_start_state=self.get('puzzle_start_state'),
+
             action_sequence=self.get('action_sequence'),
             ompl_planner=self.get('ompl_planner'),
             step_size=self.get('step_size'),
