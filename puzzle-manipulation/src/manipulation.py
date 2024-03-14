@@ -104,14 +104,14 @@ class Manipulation:
         self.grab(action)
         self.actuate(action)
 
-    def grab(self, action):
+    def grab(self, action: Action):
         target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, self.config.grab_action_height))
 
         self.plan_and_move_to_pos(target_pos_high)
         self.plan_and_move_to_pos(target_pos)
 
-    def release(self, action):
+    def release(self, action: Action):
         target_pos = self.get_target_pos(action.grip_point)
         target_pos_high = self.add_tuples(target_pos, (0, 0, self.config.grab_action_height))
         self.plan_and_move_to_pos(target_pos_high)
