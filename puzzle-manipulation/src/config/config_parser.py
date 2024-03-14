@@ -22,6 +22,8 @@ class ConfigParser:
             robot_scale=self.get('robot_scale'),
             robot_start_state=self.get('robot_start_state'),
             robot_final_state=self.get('robot_final_state'),
+            robot_x_limits=self.get('robot_x_limits'),
+            robot_y_limits=self.get('robot_y_limits'),
 
             puzzle_urdf=self.get('puzzle_urdf'),
             puzzle_start_state=self.get('puzzle_start_state'),

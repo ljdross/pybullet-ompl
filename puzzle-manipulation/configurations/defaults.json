@@ -1,5 +1,7 @@
 {
   "robot_scale": 4.0,
+  "robot_x_limits": [-16.0, 16.0],
+  "robot_y_limits": [-16.0, 16.0],
   "grab_action_height": 0.5,
   "ompl_planner": "BITstar",
   "planning_time": 5.0,

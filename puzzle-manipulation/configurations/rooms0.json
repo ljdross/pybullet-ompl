@@ -3,6 +3,8 @@
   "robot_scale": 2.0,
   "robot_start_state": [0, 0, 0, 0, 0, -1, 0, 1.5, 0],
   "robot_final_state": [-4, -12, 0, 0, 0, -1, 0, 1.5, 0],
+  "robot_x_limits": [-4.0, 2.0],
+  "robot_y_limits": [-14.0, 2.0],
   "puzzle_urdf": "../../puzzle-generator/puzzles/rooms0/urdf/rooms0.urdf",
   "puzzle_start_state": [0, 0],
   "action_sequence": [

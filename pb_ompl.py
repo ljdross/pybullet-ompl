@@ -38,6 +38,9 @@ class PbOMPLRobot():
         # Public attributes
         self.id = id
 
+        self.x_limits = []
+        self.y_limits = []
+
         # prune fixed joints
         all_joint_num = p.getNumJoints(id)
         all_joint_idx = list(range(all_joint_num))
@@ -53,6 +56,10 @@ class PbOMPLRobot():
         joint_info = p.getJointInfo(self.id, joint_idx)
         return joint_info[2] != p.JOINT_FIXED
 
+    def set_xy_limits(self, x_limits: tuple[float, float], y_limits: tuple[float, float]):
+        self.x_limits = x_limits
+        self.y_limits = y_limits
+
     def get_joint_bounds(self):
         '''
         Get joint bounds.
@@ -64,6 +71,12 @@ class PbOMPLRobot():
             high = joint_info[9] # high bounds
             if low < high:
                 self.joint_bounds.append([low, high])
+
+        if self.x_limits:
+            self.joint_bounds[0] = self.x_limits
+        if self.y_limits:
+            self.joint_bounds[1] = self.y_limits
+
         print("Joint bounds: {}".format(self.joint_bounds))
         return self.joint_bounds
 

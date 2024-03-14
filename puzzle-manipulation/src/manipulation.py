@@ -36,6 +36,7 @@ class Manipulation:
 
         robot_id = self.load(config.robot_urdf, (0, 0, 0.005), scale=config.robot_scale)
         self.robot = pb_ompl.PbOMPLRobot(robot_id)
+        self.robot.set_xy_limits(config.robot_x_limits, config.robot_y_limits)
         self.robot.set_state(list(config.robot_start_state))
 
         print("number of dimensions (robot) = " + str(self.robot.num_dim))

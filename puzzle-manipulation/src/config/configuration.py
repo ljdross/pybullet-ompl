@@ -14,6 +14,8 @@ class Configuration:
     robot_scale: float
     robot_start_state: tuple[float, ...]
     robot_final_state: tuple[float, ...]
+    robot_x_limits: tuple[float, float]
+    robot_y_limits: tuple[float, float]
 
     puzzle_urdf: str
     puzzle_start_state: tuple[float, ...]
