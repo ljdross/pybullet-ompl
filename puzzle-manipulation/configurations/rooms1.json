@@ -8,8 +8,8 @@
   "puzzle_urdf": "../../puzzle-generator/puzzles/rooms1/urdf/rooms1.urdf",
   "puzzle_start_state": [0, 0],
   "action_sequence": [
-    [0, 1.0, "link_fixed_12_door_handle1"],
-    [1, 1.0, "link_fixed_38_door_handle1"]
+    [0, 1.4, "link_fixed_12_door_handle1"],
+    [1, 1.4, "link_fixed_38_door_handle1"]
   ],
   "grab_action_height": 0.01,
   "planning_time": 60.0
