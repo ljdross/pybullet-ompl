@@ -21,4 +21,5 @@ class Configuration:
     action_sequence: tuple[Action, ...]
     grab_action_height: float
     ompl_planner: str
+    planning_time: float
     step_size: float

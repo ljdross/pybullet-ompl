@@ -9,5 +9,6 @@
     [0, 1.0, "link_fixed_17_door_handle1"],
     [1, 1.0, "link_fixed_38_door_handle1"]
   ],
-  "grab_action_height": 0.01
+  "grab_action_height": 0.01,
+  "planning_time": 60.0
 }

@@ -174,7 +174,7 @@ class Manipulation:
     def plan_and_move_to_state(self, state):
         self.print_planning_info(state)
 
-        success, path = self.pb_ompl_interface.plan(state)
+        success, path = self.pb_ompl_interface.plan(state, self.config.planning_time)
 
         if success:
             self.solution_append(path)
