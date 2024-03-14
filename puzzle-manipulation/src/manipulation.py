@@ -8,7 +8,6 @@ import pybullet_data
 
 SEED = 0
 RANDOM_START_STATES_FOR_IK_NUM = 100000
-GRIP_ACTION_HEIGHT = 0.5
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dirname)
@@ -107,14 +106,14 @@ class Manipulation:
 
     def grab(self, action):
         target_pos = self.get_target_pos(action.grip_point)
-        target_pos_high = self.add_tuples(target_pos, (0, 0, GRIP_ACTION_HEIGHT))
+        target_pos_high = self.add_tuples(target_pos, (0, 0, self.config.grab_action_height))
 
         self.plan_and_move_to_pos(target_pos_high)
         self.plan_and_move_to_pos(target_pos)
 
     def release(self, action):
         target_pos = self.get_target_pos(action.grip_point)
-        target_pos_high = self.add_tuples(target_pos, (0, 0, GRIP_ACTION_HEIGHT))
+        target_pos_high = self.add_tuples(target_pos, (0, 0, self.config.grab_action_height))
         self.plan_and_move_to_pos(target_pos_high)
 
     def get_target_pos(self, target_name: str):

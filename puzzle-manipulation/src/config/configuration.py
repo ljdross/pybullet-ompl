@@ -19,5 +19,6 @@ class Configuration:
     puzzle_start_state: tuple[float, ...]
 
     action_sequence: tuple[Action, ...]
+    grab_action_height: float
     ompl_planner: str
     step_size: float

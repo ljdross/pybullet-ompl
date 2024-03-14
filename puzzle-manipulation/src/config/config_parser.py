@@ -27,6 +27,7 @@ class ConfigParser:
             puzzle_start_state=self.get('puzzle_start_state'),
 
             action_sequence=self.get('action_sequence'),
+            grab_action_height=self.get('grab_action_height'),
             ompl_planner=self.get('ompl_planner'),
             step_size=self.get('step_size'),
         )

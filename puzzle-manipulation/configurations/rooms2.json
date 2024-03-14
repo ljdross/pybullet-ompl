@@ -8,5 +8,6 @@
   "action_sequence": [
     [0, 1.4, "link_fixed_15_door_handle1"],
     [1, 1.4, "link_fixed_38_door_handle1"]
-  ]
+  ],
+  "grab_action_height": 0.01
 }
