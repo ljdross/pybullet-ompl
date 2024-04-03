@@ -5,7 +5,7 @@
   "robot_final_state": [-4, 4, 0, 0, 0, -1, 0, 1.5, 0],
   "robot_x_limits": [-10.0, 10.0],
   "robot_y_limits": [-6.0, 6.0],
-  "puzzle_urdf": "../../puzzle-generator/puzzles/rooms3/urdf/rooms3.urdf",
+  "puzzle_urdf": "./puzzles/rooms3/urdf/rooms3.urdf",
   "puzzle_start_state": [0, 0],
   "action_sequence": [
     [0, 1.4, "link_fixed_12_door_handle1"],
