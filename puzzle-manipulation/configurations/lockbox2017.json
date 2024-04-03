@@ -4,10 +4,10 @@
   "robot_start_state": [-4, -4, 0, 0, 0, -1, 0, 1.5, 0],
   "puzzle_start_state": [0, 0, 0, 0, 0],
   "action_sequence": [
-    [4, 1.5708, "link_fixed_17_door_handle"],
-    [3, 2, "link_fixed_13_handle_knob"],
-    [2, 1.5708, "link_fixed_10_handle_knob"],
-    [1, 2, "link_fixed_6_handle_knob"],
-    [0, 1.5708, "link_fixed_3_door_handle"]
+    [4, 1.5708, "link_fixed_18_door_handle"],
+    [3, 2, "link_fixed_14_handle_knob"],
+    [2, 1.5708, "link_fixed_11_handle_knob"],
+    [1, 2, "link_fixed_7_handle_knob"],
+    [0, 1.5708, "link_fixed_4_door_handle"]
   ]
 }
