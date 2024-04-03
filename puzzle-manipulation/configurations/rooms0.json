@@ -1,6 +1,6 @@
 {
   "robot_urdf": "../models/kuka_iiwa/model_in_2d_plane.urdf",
-  "robot_scale": 2.0,
+  "robot_scale": 1.5,
   "robot_start_state": [0, 0, 0, 0, 0, -1, 0, 1.5, 0],
   "robot_final_state": [-4, -12, 0, 0, 0, -1, 0, 1.5, 0],
   "robot_x_limits": [-4.0, 2.0],
@@ -11,5 +11,5 @@
     [0, 1.4, "link_fixed_17_door_handle1"],
     [1, 1.4, "link_fixed_38_door_handle1"]
   ],
-  "grab_action_height": 0.01
+  "grab_action_height": 0.25
 }
