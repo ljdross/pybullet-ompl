@@ -122,7 +122,7 @@ class Manipulation:
         world_pos = p.getLinkState(self.puzzle.id, joint_index)[0]
         shape_data = p.getCollisionShapeData(self.puzzle.id, joint_index)[0]
         scale = shape_data[3]
-        pos = self.add_tuples(world_pos, (0, 0, scale[2]))
+        pos = self.add_tuples(world_pos, (0, 0, scale[2] + self.config.grab_gap))
         return pos
 
     def actuate(self, action: Action):

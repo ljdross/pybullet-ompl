@@ -30,6 +30,7 @@ class ConfigParser:
 
             action_sequence=self.get('action_sequence'),
             grab_action_height=self.get('grab_action_height'),
+            grab_gap=self.get('grab_gap'),
             ompl_planner=self.get('ompl_planner'),
             planning_time=self.get('planning_time'),
             step_size=self.get('step_size'),

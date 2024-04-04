@@ -1,8 +1,12 @@
 {
+  "robot_urdf": "../models/kuka_iiwa/model_in_2d_plane.urdf",
   "robot_scale": 4.0,
+  "robot_start_state": [-4, -4, 0, 0, 0, -1, 0, 1.5, 0],
+  "robot_final_state": [-4, -4, 0, 0, 0, -1, 0, 1.5, 0],
   "robot_x_limits": [-16.0, 16.0],
   "robot_y_limits": [-16.0, 16.0],
   "grab_action_height": 0.5,
+  "grab_gap": 0.09,
   "ompl_planner": "BITstar",
   "planning_time": 5.0,
   "step_size": 0.04
