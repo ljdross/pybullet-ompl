@@ -6,7 +6,7 @@ from src import obs
 
 
 def main():
-    # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/simple_sliders.json'
+    # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/simple_sliders2.json'
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/grid_world3.json'
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/continuous_space3.json'
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/lockbox2017.json'
