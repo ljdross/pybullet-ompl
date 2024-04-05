@@ -1,5 +1,5 @@
 {
-  "puzzle_urdf": "../../puzzle-generator/puzzles/grid_world1/urdf/grid_world1.urdf",
+  "puzzle_urdf": "./puzzles/grid_world1/urdf/grid_world1.urdf",
   "puzzle_start_state": [0, 0, 0, 0, 0],
   "action_sequence": [
     [4, 1.5708, "link_fixed_16_handle_knob"],

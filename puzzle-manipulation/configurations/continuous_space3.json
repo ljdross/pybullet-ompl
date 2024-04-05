@@ -1,5 +1,5 @@
 {
-  "puzzle_urdf": "../../puzzle-generator/puzzles/continuous_space3/urdf/continuous_space3.urdf",
+  "puzzle_urdf": "./puzzles/continuous_space3/urdf/continuous_space3.urdf",
   "puzzle_start_state": [0, 0, 0, 0],
   "action_sequence": [
     [3, 2.58322, "link_fixed_54_handle_knob"],

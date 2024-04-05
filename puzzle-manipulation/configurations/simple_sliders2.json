@@ -1,5 +1,5 @@
 {
-  "puzzle_urdf": "../../puzzle-generator/puzzles/simple_sliders2/urdf/simple_sliders2.urdf",
+  "puzzle_urdf": "./puzzles/simple_sliders2/urdf/simple_sliders2.urdf",
   "puzzle_start_state": [0, 0],
   "action_sequence": [
     [1, 1, "link_fixed_5_handle_knob"],
