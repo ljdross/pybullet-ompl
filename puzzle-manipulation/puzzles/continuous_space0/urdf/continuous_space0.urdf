@@ -1,0 +1,397 @@
+<?xml version="1.0"?>
+<!-- created with Phobos 1.0.1 "Capricious Choutengan" -->
+  <robot name="continuous_space0">
+
+    <link name="base_link">
+    </link>
+
+    <link name="goal">
+      <visual name="visual_box_0_link_0.001">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="2.996 0.998 0.998"/>
+        </geometry>
+        <material name="green_translucent"/>
+      </visual>
+    </link>
+
+    <link name="link_0_joint_0">
+      <visual name="visual_box_0_link_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="2.999 0.999 0.999"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+      <collision name="collision_box_0_link_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="2.999 0.999 0.999"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_1_joint_0">
+      <visual name="visual_box_18_link_1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.999 0.999 0.999"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_box_18_link_1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.999 0.999 0.999"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_2_joint_0">
+      <visual name="visual_box_29_link_2">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.999 0.999 0.999"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_box_29_link_2">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.999 0.999 0.999"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_3_joint_0">
+      <visual name="visual_box_52_link_3">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="2.999 0.999 0.999"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_box_52_link_3">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="2.999 0.999 0.999"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_19_handle_shaft">
+      <visual name="visual_box_fixed_19_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.199 0.199 0.499"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_box_fixed_19_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.199 0.199 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_1_hinge">
+      <visual name="visual_cylinder_fixed_1_hinge">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.1245" length="1.099"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+    </link>
+
+    <link name="link_fixed_1_hinge.001">
+      <visual name="visual_cylinder_fixed_1_hinge.001">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.12438" length="1.0979"/>
+        </geometry>
+        <material name="green_translucent"/>
+      </visual>
+    </link>
+
+    <link name="link_fixed_20_handle_knob">
+      <visual name="visual_box_fixed_20_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <collision name="collision_box_fixed_20_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_2_handle_shaft">
+      <visual name="visual_cylinder_fixed_2_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0995" length="0.499"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+      <collision name="collision_cylinder_fixed_2_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0995" length="0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_2_handle_shaft.001">
+      <visual name="visual_cylinder_fixed_2_handle_shaft.001">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0994" length="0.4985"/>
+        </geometry>
+        <material name="green_translucent"/>
+      </visual>
+    </link>
+
+    <link name="link_fixed_30_handle_shaft">
+      <visual name="visual_box_fixed_30_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.199 0.199 0.499"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_box_fixed_30_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.199 0.199 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_31_handle_knob">
+      <visual name="visual_box_fixed_31_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <collision name="collision_box_fixed_31_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_3_handle_knob">
+      <visual name="visual_box_fixed_3_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <collision name="collision_box_fixed_3_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_3_handle_knob.001">
+      <visual name="visual_box_fixed_3_handle_knob.001">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.04895 0.04895 0.1988"/>
+        </geometry>
+        <material name="green_translucent"/>
+      </visual>
+    </link>
+
+    <link name="link_fixed_53_hinge">
+      <visual name="visual_cylinder_fixed_53_hinge">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.1245" length="1.099"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+    </link>
+
+    <link name="link_fixed_54_handle_shaft">
+      <visual name="visual_cylinder_fixed_54_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0995" length="0.499"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_cylinder_fixed_54_handle_shaft">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder radius="0.0995" length="0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_55_handle_knob">
+      <visual name="visual_box_fixed_55_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <collision name="collision_box_fixed_55_handle_knob">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.049 0.049 0.199"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="goal" type="fixed">
+      <origin xyz="0 0 0.5" rpy="0 0 -2.79786"/>
+      <parent link="base_link"/>
+      <child link="goal"/>
+      <limit effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_0_joint_0" type="revolute">
+      <origin xyz="0 0 0.5" rpy="0 0 -0.97753"/>
+      <parent link="base_link"/>
+      <child link="link_0_joint_0"/>
+      <axis xyz="0 0 1.0"/>
+      <limit lower="-1.82033" upper="0" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_1_joint_0" type="prismatic">
+      <origin xyz="-1.29085 -1.12527 0.5" rpy="0 0 -1.19497"/>
+      <parent link="base_link"/>
+      <child link="link_1_joint_0"/>
+      <axis xyz="1.0 0 0"/>
+      <limit lower="0" upper="2.63239" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_2_joint_0" type="prismatic">
+      <origin xyz="0.41443 -2.904 0.5" rpy="0 0 0.49049"/>
+      <parent link="base_link"/>
+      <child link="link_2_joint_0"/>
+      <axis xyz="1.0 0 0"/>
+      <limit lower="0" upper="3.46056" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_3_joint_0" type="revolute">
+      <origin xyz="1.53895 2.64164 0.5" rpy="0 0 -2.43302"/>
+      <parent link="base_link"/>
+      <child link="link_3_joint_0"/>
+      <axis xyz="0 0 1.0"/>
+      <limit lower="-1.64453" upper="0" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_fixed_19_handle_shaft" type="fixed">
+      <origin xyz="0 0 0.75" rpy="0 0 0"/>
+      <parent link="link_1_joint_0"/>
+      <child link="link_fixed_19_handle_shaft"/>
+    </joint>
+
+    <joint name="link_fixed_1_hinge" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="link_0_joint_0"/>
+      <child link="link_fixed_1_hinge"/>
+    </joint>
+
+    <joint name="link_fixed_1_hinge.001" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="goal"/>
+      <child link="link_fixed_1_hinge.001"/>
+    </joint>
+
+    <joint name="link_fixed_20_handle_knob" type="fixed">
+      <origin xyz="0 0 0.35" rpy="0 0 0"/>
+      <parent link="link_fixed_19_handle_shaft"/>
+      <child link="link_fixed_20_handle_knob"/>
+    </joint>
+
+    <joint name="link_fixed_2_handle_shaft" type="fixed">
+      <origin xyz="1.125 0 0.75" rpy="0 0 0"/>
+      <parent link="link_0_joint_0"/>
+      <child link="link_fixed_2_handle_shaft"/>
+    </joint>
+
+    <joint name="link_fixed_2_handle_shaft.001" type="fixed">
+      <origin xyz="1.12388 0 0.74925" rpy="0 0 0"/>
+      <parent link="goal"/>
+      <child link="link_fixed_2_handle_shaft.001"/>
+    </joint>
+
+    <joint name="link_fixed_30_handle_shaft" type="fixed">
+      <origin xyz="0 0 0.75" rpy="0 0 0"/>
+      <parent link="link_2_joint_0"/>
+      <child link="link_fixed_30_handle_shaft"/>
+    </joint>
+
+    <joint name="link_fixed_31_handle_knob" type="fixed">
+      <origin xyz="0 0 0.35" rpy="0 0 0"/>
+      <parent link="link_fixed_30_handle_shaft"/>
+      <child link="link_fixed_31_handle_knob"/>
+    </joint>
+
+    <joint name="link_fixed_3_handle_knob" type="fixed">
+      <origin xyz="0 0 0.35" rpy="0 0 0"/>
+      <parent link="link_fixed_2_handle_shaft"/>
+      <child link="link_fixed_3_handle_knob"/>
+    </joint>
+
+    <joint name="link_fixed_3_handle_knob.001" type="fixed">
+      <origin xyz="0 0 0.34965" rpy="0 0 0"/>
+      <parent link="link_fixed_2_handle_shaft.001"/>
+      <child link="link_fixed_3_handle_knob.001"/>
+    </joint>
+
+    <joint name="link_fixed_53_hinge" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="link_3_joint_0"/>
+      <child link="link_fixed_53_hinge"/>
+    </joint>
+
+    <joint name="link_fixed_54_handle_shaft" type="fixed">
+      <origin xyz="1.125 0 0.75" rpy="0 0 0"/>
+      <parent link="link_3_joint_0"/>
+      <child link="link_fixed_54_handle_shaft"/>
+    </joint>
+
+    <joint name="link_fixed_55_handle_knob" type="fixed">
+      <origin xyz="0 0 0.35" rpy="0 0 0"/>
+      <parent link="link_fixed_54_handle_shaft"/>
+      <child link="link_fixed_55_handle_knob"/>
+    </joint>
+
+    <material name="gray">
+      <color rgba="0.5 0.5 0.5 1.0"/>
+    </material>
+
+    <material name="green">
+      <color rgba="0 1.0 0 1.0"/>
+    </material>
+
+    <material name="green_translucent">
+      <color rgba="0 1.0 0 0.25"/>
+    </material>
+
+    <material name="red">
+      <color rgba="1.0 0 0 1.0"/>
+    </material>
+
+    <material name="yellow">
+      <color rgba="1.0 1.0 0 1.0"/>
+    </material>
+
+  </robot>

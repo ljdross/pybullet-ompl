@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<!-- created with Phobos 1.0.1 "Capricious Choutengan" -->
+  <robot name="continuous_space1">
+
+    <passive_joint name="goal"/>
+
+    <passive_joint name="link_0_joint_0"/>
+
+    <passive_joint name="link_1_joint_0"/>
+
+    <passive_joint name="link_2_joint_0"/>
+
+    <passive_joint name="link_3_joint_0"/>
+
+    <passive_joint name="link_fixed_1_hinge"/>
+
+    <passive_joint name="link_fixed_1_hinge.001"/>
+
+    <passive_joint name="link_fixed_25_hinge"/>
+
+    <passive_joint name="link_fixed_26_handle_shaft"/>
+
+    <passive_joint name="link_fixed_27_handle_knob"/>
+
+    <passive_joint name="link_fixed_2_handle_shaft"/>
+
+    <passive_joint name="link_fixed_2_handle_shaft.001"/>
+
+    <passive_joint name="link_fixed_35_handle_shaft"/>
+
+    <passive_joint name="link_fixed_36_handle_knob"/>
+
+    <passive_joint name="link_fixed_3_handle_knob"/>
+
+    <passive_joint name="link_fixed_3_handle_knob.001"/>
+
+    <passive_joint name="link_fixed_5_handle_shaft"/>
+
+    <passive_joint name="link_fixed_6_handle_knob"/>
+
+    <link_sphere_approximation link="base_link">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="goal">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_0_joint_0">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_1_joint_0">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_2_joint_0">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_3_joint_0">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_1_hinge">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_1_hinge.001">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_25_hinge">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_26_handle_shaft">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_27_handle_knob">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_2_handle_shaft">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_2_handle_shaft.001">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_35_handle_shaft">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_36_handle_knob">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_3_handle_knob">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_3_handle_knob.001">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_5_handle_shaft">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
+    <link_sphere_approximation link="link_fixed_6_handle_knob">
+      <sphere center="0.0 0.0 0.0" radius="0"/>
+    </link_sphere_approximation>
+
