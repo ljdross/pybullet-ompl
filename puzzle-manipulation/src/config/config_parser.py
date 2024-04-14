@@ -1,4 +1,4 @@
-import json
+import json5
 import os
 import sys
 
@@ -11,10 +11,10 @@ from configuration import Action, Configuration
 class ConfigParser:
     def __init__(self, config_json: str, defaults_json: str):
         with open(defaults_json) as f1:
-            self.defaults = json.load(f1)
+            self.defaults = json5.load(f1)
 
         with open(config_json) as f2:
-            self.config = json.load(f2)
+            self.config = json5.load(f2)
 
     def parse(self) -> Configuration:
         return Configuration(
