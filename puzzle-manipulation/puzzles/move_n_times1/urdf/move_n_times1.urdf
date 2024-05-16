@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<!-- created with Phobos 1.0.1 "Capricious Choutengan" -->
+  <robot name="move_n_times1">
+
+    <link name="base_link">
+    </link>
+
+    <link name="goal">
+    </link>
+
+    <link name="link_0_joint_0">
+      <visual name="visual_box_2_link_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.374 0.499 0.499"/>
+        </geometry>
+        <material name="green"/>
+      </visual>
+      <collision name="collision_box_2_link_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.374 0.499 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_0_joint_0.001">
+      <visual name="visual_box_2_link_0.001">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.37363 0.4985 0.4985"/>
+        </geometry>
+        <material name="green_translucent"/>
+      </visual>
+    </link>
+
+    <link name="link_0_joint_1">
+    </link>
+
+    <link name="link_0_joint_1.001">
+    </link>
+
+    <link name="link_0_joint_2">
+    </link>
+
+    <link name="link_1_joint_0">
+      <visual name="visual_box_3_link_1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.999 0.099 0.499"/>
+        </geometry>
+        <material name="red"/>
+      </visual>
+      <collision name="collision_box_3_link_1">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="1.999 0.099 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_4_wall_north_0">
+      <visual name="visual_box_fixed_4_wall_north_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.899 0.099 0.499"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <collision name="collision_box_fixed_4_wall_north_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.899 0.099 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_5_wall_northwest_0">
+      <visual name="visual_box_fixed_5_wall_northwest_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.099 0.899 0.499"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <collision name="collision_box_fixed_5_wall_northwest_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.099 0.899 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <link name="link_fixed_6_wall_northeast_0">
+      <visual name="visual_box_fixed_6_wall_northeast_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.099 0.899 0.499"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <collision name="collision_box_fixed_6_wall_northeast_0">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.099 0.899 0.499"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="goal" type="fixed">
+      <origin xyz="-0.73127 -1.0 0.25" rpy="0 0 2.183"/>
+      <parent link="base_link"/>
+      <child link="goal"/>
+      <limit effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_0_joint_0" type="revolute">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="link_0_joint_1"/>
+      <child link="link_0_joint_0"/>
+      <axis xyz="0 0 1.0"/>
+      <limit lower="-3.14159" upper="3.14159" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_0_joint_0.001" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="link_0_joint_1.001"/>
+      <child link="link_0_joint_0.001"/>
+      <limit effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_0_joint_1" type="prismatic">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="link_0_joint_2"/>
+      <child link="link_0_joint_1"/>
+      <axis xyz="0 1.0 0"/>
+      <limit lower="-1.0" upper="0.5" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_0_joint_1.001" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="goal"/>
+      <child link="link_0_joint_1.001"/>
+      <limit effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_0_joint_2" type="prismatic">
+      <origin xyz="0 0 0.25" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="link_0_joint_2"/>
+      <axis xyz="1.0 0 0"/>
+      <limit lower="-1.0" upper="1.0" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_1_joint_0" type="prismatic">
+      <origin xyz="0.5 -0.5 0.25" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="link_1_joint_0"/>
+      <axis xyz="1.0 0 0"/>
+      <limit lower="-1.0" upper="1.0" effort="0" velocity="0"/>
+    </joint>
+
+    <joint name="link_fixed_4_wall_north_0" type="fixed">
+      <origin xyz="0 0.5 0.25" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="link_fixed_4_wall_north_0"/>
+    </joint>
+
+    <joint name="link_fixed_5_wall_northwest_0" type="fixed">
+      <origin xyz="-0.5 0 0.25" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="link_fixed_5_wall_northwest_0"/>
+    </joint>
+
+    <joint name="link_fixed_6_wall_northeast_0" type="fixed">
+      <origin xyz="0.5 0 0.25" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="link_fixed_6_wall_northeast_0"/>
+    </joint>
+
+    <material name="gray">
+      <color rgba="0.5 0.5 0.5 1.0"/>
+    </material>
+
+    <material name="green">
+      <color rgba="0 1.0 0 1.0"/>
+    </material>
+
+    <material name="green_translucent">
+      <color rgba="0 1.0 0 0.25"/>
+    </material>
+
+    <material name="red">
+      <color rgba="1.0 0 0 1.0"/>
+    </material>
+
+  </robot>
