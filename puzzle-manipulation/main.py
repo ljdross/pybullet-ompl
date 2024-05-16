@@ -11,7 +11,8 @@ def main():
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/continuous_space3.json5'
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/lockbox2017.json5'
     # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/lockbox_random3.json5'
-    config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/rooms0.json5'
+    # config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/rooms0.json5'
+    config_json = sys.argv[1] if len(sys.argv) > 1 else './configurations/move_n_times2.json5'
 
     defaults_json = sys.argv[2] if len(sys.argv) > 2 else './configurations/defaults.json5'
 

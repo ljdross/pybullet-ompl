@@ -1,0 +1,21 @@
+{
+  "puzzle_urdf": "./puzzles/move_n_times3/urdf/move_n_times3.urdf",
+  "puzzle_start_state": [0, 0, 0, 0],
+  "action_sequence": [
+    [3, 2, "link_1_joint_0"],
+    [1, -1, "link_0_joint_0"],
+    [0, 1, "link_0_joint_0"],
+    [3, -2, "link_1_joint_0"],
+    [1, 0, "link_0_joint_0"],
+    [0, 2, "link_0_joint_0"],
+    [1, -2, "link_0_joint_0"],
+    [0, -1, "link_0_joint_0"],
+    [3, 1, "link_1_joint_0"],
+    [1, 0, "link_0_joint_0"],
+    [0, -2, "link_0_joint_0"],
+    [1, -3, "link_0_joint_0"],
+    [0, -1.57221, "link_0_joint_0"],
+    [2, 0.27791, "link_0_joint_0"]
+  ],
+  "grab_gap": -0.06
+}

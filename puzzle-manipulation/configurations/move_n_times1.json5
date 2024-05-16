@@ -1,0 +1,11 @@
+{
+  "puzzle_urdf": "./puzzles/move_n_times1/urdf/move_n_times1.urdf",
+  "puzzle_start_state": [0, 0, 0, 0],
+  "action_sequence": [
+    [3, 1, "link_1_joint_0"],
+    [1, -1, "link_0_joint_0"],
+    [0, -0.73127, "link_0_joint_0"],
+    [2, 2.183, "link_0_joint_0"]
+  ],
+  "grab_gap": -0.06
+}
