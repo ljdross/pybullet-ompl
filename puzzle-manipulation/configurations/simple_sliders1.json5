@@ -1,0 +1,7 @@
+{
+  "puzzle_urdf": "./puzzles/simple_sliders1/urdf/simple_sliders1.urdf",
+  "puzzle_start_state": [0],
+  "action_sequence": [
+    [0, 1, "link_fixed_2_handle_knob"]
+  ]
+}

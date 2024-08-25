@@ -1,0 +1,9 @@
+{
+  "puzzle_urdf": "./puzzles/simple_sliders3/urdf/simple_sliders3.urdf",
+  "puzzle_start_state": [0, 0, 0],
+  "action_sequence": [
+    [2, 1, "link_fixed_8_handle_knob"],
+    [1, 1, "link_fixed_5_handle_knob"],
+    [0, 1, "link_fixed_2_handle_knob"]
+  ]
+}
